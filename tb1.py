@@ -1,13 +1,12 @@
 import matplotlib
 
-matplotlib.use('Agg')
 from tkinter import *
-from PIL import ImageTk, Image
+#from PIL import ImageTk, Image
 from matplotlib import pyplot as plt
 import networkx as nx
-import math
+#import math
 import random as rd
-
+matplotlib.use('Agg')
 master = Tk()
 Label(master, text="Enter no of nodes: ").grid(row=0)
 e4 = Entry(master)
@@ -46,15 +45,24 @@ def draw_graph2():
     plt.draw()
     plt.savefig('myfig')
 
-    img = ImageTk.PhotoImage(Image.open("myfig"))
-    panel = Label(master, image=img)
-    panel.pack(side="bottom", fill="both", expand="yes")
+
+
+    widget = Label(master, compound='top')
+    widget.image_png = PhotoImage(file="myfig.png")
+    widget['image'] = widget.image_png
+
+
+    widget.grid()
+
+
+    #panel = Label(master, image=img)
+   # panel.pack(side="bottom", fill="both", expand="yes")
 
     plt.show()
 
 
 Button(master, text="Quit", command=quit).grid(row=3, column=0, sticky=W, pady=4)
 Button(master, text="Draw", command=draw_graph2).grid(row=3, column=1, sticky=W, pady=4)
-Button(master, text="Draw2", command=draw_graph).grid(row=3, column=2, sticky=W, pady=4)
+#Button(master, text="Draw2", command=draw_graph).grid(row=3, column=2, sticky=W, pady=4)
 
 mainloop()
