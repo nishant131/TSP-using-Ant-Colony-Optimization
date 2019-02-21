@@ -1,7 +1,10 @@
+import inline as inline
+import matplotlib
+
 import networkx as nx
 import matplotlib.pyplot as plt
 import random as rd
-%matplotlib inline
+#%matplotlib inline
 
 def least(city,const):
     const=const
@@ -70,7 +73,7 @@ for i in range(0,n):
         if e!=0:
             G.add_weighted_edges_from([(i,j,e)])
 #G.add_weighted_edges_from([(1,2,10),(1,3,14),(1,5,18),(2,3,7),(3,4,3),(3,5,11),(4,5,8)])
-pos = nx.circular_layout(G)
+pos = nx.spectral_layout(G)
 nx.draw(G,pos, with_labels=True)
 labels = nx.get_edge_attributes(G,'weight')
 #nx.draw_networkx_labels(G, pos, labels=None, font_size=18)
@@ -82,8 +85,8 @@ plt.show()
 print('\n')
 for s in G.nodes:
     mincost(s,s)
-    break;
-pos = nx.circular_layout(G1)
+    break
+pos = nx.spectral_layout(G1)
 nx.draw(G1,pos, with_labels=True)
 labels = nx.get_edge_attributes(G1,'weight')
 nx.draw_networkx_edge_labels(G1,pos,edge_labels=labels)
