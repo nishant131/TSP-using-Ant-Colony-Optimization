@@ -1,6 +1,7 @@
 import matplotlib
 matplotlib.use("TkAgg")
 
+import time
 import random as rd
 
 import matplotlib.pyplot as plt
@@ -63,7 +64,7 @@ class PageTwo(tk.Frame):
         label.pack(pady=10,padx=10)
         button1=ttk.Button(self,text="Back to Home",command=lambda :controller.show_frame(StartPage))
         button1.pack()
-        f=Figure(figsize=(5,5),dpi=100)
+        f=Figure()
         a=f.add_subplot(111)
         a.plot([1,2,3,4,5,6,7,8],[5,3,6,1,2,7,4,5])
 
@@ -224,9 +225,14 @@ class PageFive(tk.Frame):
         #plt.draw()
         #plt.show()
         #print('\n')
+        now1=time.time()
         for s in G.nodes:
             mincost(s,s)
             break
+        now2=time.time()
+        tm=now2-now1
+        label1 = tk.Label(self, text="Time taken: "+str(tm)+" seconds", font=LARGE_FONT)
+        label1.pack(pady=10, padx=10)
         plt.subplot(212)
         pos = nx.spectral_layout(G1)
         nx.draw(G1,pos, with_labels=True)
@@ -249,6 +255,7 @@ class PageFive(tk.Frame):
 
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
 
 
 
@@ -289,4 +296,5 @@ class PageFour(tk.Frame):
 #######################################################################################################
 
 app=drawGraph()
+app.geometry("1280x720")
 app.mainloop()
