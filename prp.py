@@ -1,5 +1,4 @@
 import matplotlib
-matplotlib.use("TkAgg")
 
 import time
 import random as rd
@@ -12,6 +11,8 @@ from matplotlib.figure import Figure
 
 import tkinter as tk
 from tkinter import ttk
+
+matplotlib.use("TkAgg")
 
 LARGE_FONT=("Verdana",12)
 
@@ -27,7 +28,7 @@ class drawGraph(tk.Tk):
         container.grid_columnconfigure(0,weight=1)
 
         self.frames={}
-        for F in (StartPage,PageTwo,PageThree,PageFour,PageFive):
+        for F in (StartPage,PageThree,PageFour,PageFive):
             frame=F(container,self)
             self.frames[F]=frame
             frame.grid(row=0,column=0,sticky="nsew")
@@ -44,13 +45,13 @@ class StartPage(tk.Frame):
         tk.Frame.__init__(self,parent)
         label=tk.Label(self,text="Start Page",font=LARGE_FONT)
         label.pack(pady=10,padx=10)
-        button1 = ttk.Button(self, text="Page2", command=lambda: controller.show_frame(PageTwo))
-        button1.pack()
-        button2 = ttk.Button(self, text="Page3", command=lambda: controller.show_frame(PageThree))
+        #button1 = ttk.Button(self, text="Page2", command=lambda: controller.show_frame(PageTwo))
+        #button1.pack()
+        button2 = ttk.Button(self, text="Generate Graph1", command=lambda: controller.show_frame(PageThree))
         button2.pack()
-        button3=ttk.Button(self, text="Page4", command=lambda: controller.show_frame(PageFour))
+        button3=ttk.Button(self, text="Generate Graph", command=lambda: controller.show_frame(PageFour))
         button3.pack()
-        button4 = ttk.Button(self, text="Page5", command=lambda: controller.show_frame(PageFive))
+        button4 = ttk.Button(self, text="Dynamic Programming", command=lambda: controller.show_frame(PageFive))
         button4.pack()
         button5 = ttk.Button(self, text="Quit", command=quit)
         button5.pack()
@@ -82,7 +83,7 @@ class PageTwo(tk.Frame):
 class PageThree(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page2", font=LARGE_FONT)
+        label = tk.Label(self, text="Randomized Graph", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
         button1 = ttk.Button(self, text="Back to Home", command=lambda: controller.show_frame(StartPage))
         button1.pack()
@@ -179,7 +180,7 @@ class PageFive(tk.Frame):
                 mincost(nextcity, const)
             return
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page4", font=LARGE_FONT)
+        label = tk.Label(self, text="Dyanmic Programming", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
         button1 = ttk.Button(self, text="Back to Home", command=lambda: controller.show_frame(StartPage))
         button1.pack()
@@ -194,7 +195,7 @@ class PageFive(tk.Frame):
         G=nx.Graph()
         G1=nx.Graph()
         #n=input("Enter number of nodes:")
-        n=int(10)
+        n=int(20)
         citylist={}
         for i in range(0,n):
             G.add_node(i)
@@ -225,13 +226,13 @@ class PageFive(tk.Frame):
         #plt.draw()
         #plt.show()
         #print('\n')
-        now1=time.time()
+        now1 = time.clock()
         for s in G.nodes:
             mincost(s,s)
             break
-        now2=time.time()
-        tm=now2-now1
-        label1 = tk.Label(self, text="Time taken: "+str(tm)+" seconds", font=LARGE_FONT)
+        now2 = time.clock()
+        tm="Time taken: "+str(now2-now1)+" seconds"
+        label1 = tk.Label(self, text=tm, font=LARGE_FONT)
         label1.pack(pady=10, padx=10)
         plt.subplot(212)
         pos = nx.spectral_layout(G1)
@@ -265,7 +266,7 @@ class PageFive(tk.Frame):
 class PageFour(tk.Frame):
     def __init__(self,parent,controller):
         tk.Frame.__init__(self, parent)
-        label = tk.Label(self, text="Page3", font=LARGE_FONT)
+        label = tk.Label(self, text="Complete Graph", font=LARGE_FONT)
         label.pack(pady=10, padx=10)
         button1 = ttk.Button(self, text="Back to Home", command=lambda: controller.show_frame(StartPage))
         button1.pack()
