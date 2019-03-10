@@ -1,68 +1,116 @@
 import matplotlib
 
-from tkinter import *
-#from PIL import ImageTk, Image
-from matplotlib import pyplot as plt
-import networkx as nx
-#import math
+matplotlib.use("TkAgg")
+
+import time
 import random as rd
-matplotlib.use('Agg')
-master = Tk()
-Label(master, text="Enter no of nodes: ").grid(row=0)
-e4 = Entry(master)
 
-e4.grid(row=0, column=1)
+import matplotlib.pyplot as plt
+import networkx as nx
 
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
 
-def draw_graph():
-    G = nx.fast_gnp_random_graph(int(e4.get()), 0.6)
+import tkinter as tk
+import numpy as np
+from tkinter import ttk
 
-    nx.draw_shell(G)
-    plt.show()
-
-
-def draw_graph2():
-    n = int(e4.get())
-    G = nx.Graph()
-    for i in range(0, n):
-        G.add_node(i + 1)
-    # G=nx.complete_graph(n)
-    # G.remove_edges_from(G.edges())
-    for i in range(0, n):
-        for j in range(i + 1, n):
-            e1 = rd.random()
-            e2 = rd.random()
-            e3 = rd.random()
-            e = (int(e1 * 10) + int(e2 * 10)) * (int(e3 * 10))
-            if e != 0:
-                G.add_weighted_edges_from([(i + 1, j + 1, e)])
-    # G.add_weighted_edges_from([(1,2,10),(1,3,14),(1,5,18),(2,3,7),(3,4,3),(3,5,11),(4,5,8)])
-    pos = nx.circular_layout(G)
-    nx.draw(G, pos, with_labels=True)
-    labels = nx.get_edge_attributes(G, 'weight')
-    nx.draw_networkx_edge_labels(G, pos, edge_labels=labels)
-
-    plt.draw()
-    plt.savefig('myfig')
+LARGE_FONT = ("Verdana", 12)
 
 
+#####################################################################################################
 
-    widget = Label(master, compound='top')
-    widget.image_png = PhotoImage(file="myfig.png")
-    widget['image'] = widget.image_png
+class drawGraph(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+
+        container = tk.Frame(self)
+        container.pack(side="top", fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
+
+        self.frames = {}
+        for F in (StartPage,  PageSix):
+            frame = F(container, self)
+            self.frames[F] = frame
+            frame.grid(row=0, column=0, sticky="nsew")
+        self.show_frame(StartPage)
+
+    def show_frame(self, cont):
+        frame = self.frames[cont]
+        frame.tkraise()
 
 
-    widget.grid()
+##################################################################################################
+
+class StartPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Start Page", font=LARGE_FONT)
+        label.pack(pady=10, padx=10)
+
+        button6 = ttk.Button(self, text="Page6", command=lambda: controller.show_frame(PageSix))
+        button6.pack()
+        button5 = ttk.Button(self, text="Quit", command=quit)
+        button5.pack()
 
 
-    #panel = Label(master, image=img)
-   # panel.pack(side="bottom", fill="both", expand="yes")
-
-    plt.show()
+#############################################################################################
 
 
-Button(master, text="Quit", command=quit).grid(row=3, column=0, sticky=W, pady=4)
-Button(master, text="Draw", command=draw_graph2).grid(row=3, column=1, sticky=W, pady=4)
-#Button(master, text="Draw2", command=draw_graph).grid(row=3, column=2, sticky=W, pady=4)
 
-mainloop()
+###############################################################################################
+
+
+
+#######################################################################################################
+
+
+##################################################################################################
+
+
+#######################################################################################################
+
+
+
+#######################################################################################################
+
+class PageSix(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Page6", font=LARGE_FONT)
+        label.pack(pady=10, padx=10)
+        button1 = ttk.Button(self, text="Back to Home", command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+        f = plt.figure(figsize=(8, 8))
+        a = f.add_subplot(111)
+        # plt.axis('off')
+        N = 20
+        x = np.random.randint(1000,size=N)
+        y = np.random.randint(1000,size=N)
+        colors = ("black")
+        area = np.pi * 3
+
+        # Plot
+        plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+        # splt.title('Scatter plot pythonspot.com')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        # plt.show()
+
+        xlim = a.get_xlim()
+        ylim = a.get_ylim()
+
+        canvas = FigureCanvasTkAgg(f, self)
+        canvas.draw()
+
+        toolbar = NavigationToolbar2Tk(canvas, self)
+        toolbar.update()
+
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+
+app = drawGraph()
+app.geometry("1280x720")
+app.mainloop()
