@@ -79,7 +79,7 @@ class PageSix(tk.Frame):
         f = plt.figure(figsize=(8, 8))
         a = f.add_subplot(111)
         # plt.axis('off')
-        N = 20
+        N = 10
         x = np.random.randint(1000,size=N)
         y = np.random.randint(1000,size=N)
 
