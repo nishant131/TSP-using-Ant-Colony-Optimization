@@ -1,13 +1,5 @@
 import networkx as nx
 
-    minimum=999999999
-                    continue
-                ed1=ed_dict['weight']
-                ed_dict2=G.get_edge_data(i,city)
-                if ed_dict1 is None:
-                    continue
-                ed2=ed_dict['weight']
-                minimum=ed1+ed2
 class DynamicSol:
     def __init__(self,s,G):
         self.s=s
