@@ -45,14 +45,15 @@ class ACOSol:
         for ite in range(self.iteration):
 
             for i in range(self.m):
+                x = i%self.n
                 visit = np.zeros((1, self.n))
-                route[i, 0] = i
-                route[i, self.n] = i
-                visit[0, i] = 1
-                k = 1
+                route[i, 0] = x
+                route[i, self.n] = x
+                visit[0, x] = 1
+                k = 1           #index for route
                 t4 = 0
                 temp_visibility = np.array(visibility)  # creating a copy of visibility
-                x = i
+
                 while not (self.visitall(visit)):
                     t5 = 0
                     maxprob = 0

@@ -179,16 +179,16 @@ class PageEight(tk.Frame):
         f = plt.figure(figsize=(8, 8))
         a = f.add_subplot(111)
         # plt.axis('off')
-        n_cities = 6
+        n_cities = 5
         x = np.random.randint(1000, size=n_cities)
         y = np.random.randint(1000, size=n_cities)
 
         mg = MyGraph()
         mg.generategraph(n_cities, x, y)
-        n_ants = 6
-        it = 70
-        alpha = 7
-        beta = 2
+        n_ants = 10
+        it = 40
+        alpha = 0.75
+        beta = 0.2
         e = 0.25
         acosol = aco.ACOSol(mg.getgraph(), n_ants, n_cities, it, alpha, beta, e)
         ans = acosol.getAns()
