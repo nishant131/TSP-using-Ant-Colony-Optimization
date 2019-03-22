@@ -24,6 +24,7 @@ class ACOSol:
         self.beta=beta
         self.e=e
         self.ans=[]
+        self.cost = 9999999
         self.solve()
 
     def visitall(self,visit):
@@ -45,15 +46,14 @@ class ACOSol:
         for ite in range(self.iteration):
 
             for i in range(self.m):
-                x = i%self.n
                 visit = np.zeros((1, self.n))
-                route[i, 0] = x
-                route[i, self.n] = x
-                visit[0, x] = 1
-                k = 1           #index for route
+                route[i, 0] = i
+                route[i, self.n] = i
+                visit[0, i] = 1
+                k = 1
                 t4 = 0
                 temp_visibility = np.array(visibility)  # creating a copy of visibility
-
+                x = i
                 while not (self.visitall(visit)):
                     t5 = 0
                     maxprob = 0
@@ -79,9 +79,9 @@ class ACOSol:
                         continue
                     visibility[i, j] *= (1 - self.e)
                     visibility[i, j] += t4
-        cost = 9999999
-        print("route")
-        print(route)
+
+        #print("route")
+        #print(route)
         for ant in (route):
             prv = ant[0]
             temp_cost = 0
@@ -92,10 +92,12 @@ class ACOSol:
                 nxt = int(nxt)
                 temp_cost += self.d[prv, nxt]
                 prv = nxt
-            if temp_cost < cost:
-                cost = temp_cost
+            if temp_cost < self.cost:
+                self.cost = temp_cost
                 self.ans = ant
+
+        #return cost
 
     def getAns(self):
         self.ans=[int(x) for x in self.ans]
-        return self.ans
+        return self.ans, self.cost

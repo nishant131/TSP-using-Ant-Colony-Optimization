@@ -1,4 +1,4 @@
-import Generategraph as gg
+import Generategraph1 as gg
 
 app = gg.drawGraph()
 app.geometry("1280x720")

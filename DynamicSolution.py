@@ -17,17 +17,21 @@ class DynamicSol:
         for i in self.G.nodes:
             if i==self.s:
                 continue
-            if (self.citylist[i] == 0):
-                ed_dict1 = self.G.get_edge_data(i, self.s)
-                if ed_dict1 is None:
-                    continue
-                ed1 = ed_dict1['weight']
-                ed_dict = self.G.get_edge_data(city, i)
-                if ed_dict is None:
-                    continue
-                ed = ed_dict['weight']
-                if ((ed+ed1) < minimum):
-                    minimum = ed1 + ed
+            ed_dict = self.G.get_edge_data(city, i)
+            if ed_dict is None:
+                continue
+            ed = ed_dict['weight']
+            if ((self.citylist[i] == 0) and (ed != 0)):
+                if ((2*ed) < minimum):
+                    ed_dict1 = self.G.get_edge_data(i, self.s)
+                    if ed_dict1 is None:
+                        continue
+                    ed1 = ed_dict['weight']
+                    ed_dict2 = self.G.get_edge_data(city,i)
+                    if ed_dict2 is None:
+                        continue
+                    ed2 = ed_dict2['weight']
+                    minimum = ed1 + ed2
                     ncity = i
         return ncity
 

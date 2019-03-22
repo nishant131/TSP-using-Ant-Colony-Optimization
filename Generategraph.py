@@ -91,7 +91,7 @@ class PageSix(tk.Frame):
 
         mg = MyGraph()
         mg.generategraph(N, x, y)
-        ans = mg.solve(0)
+        an = mg.solve(0)
         colors = ("black")
         area = np.pi * 3
         # Plot
