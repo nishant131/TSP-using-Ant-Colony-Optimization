@@ -41,7 +41,7 @@ def naive(s, G):
         if t1<mn:
             mn=t1
             ans=temp
-    return ans
+    return ans,mn
 
 '''for nxt in ans:
     ed_dict=G.get_edge_data(prv,nxt)
