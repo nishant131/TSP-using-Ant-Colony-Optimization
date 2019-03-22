@@ -4,6 +4,7 @@ import math
 matplotlib.use("TkAgg")
 import Naive
 import DynamicSolution as dsol
+import aco1 as aco
 import time
 import random as rd
 
@@ -48,7 +49,7 @@ class drawGraph(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (StartPage,  PageSix, PageSeven):
+        for F in (StartPage,  PageSix, PageSeven, PageEight):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -68,6 +69,8 @@ class StartPage(tk.Frame):
         button6.pack()
         button7 = ttk.Button(self, text="Page7", command=lambda: controller.show_frame(PageSeven))
         button7.pack()
+        button8 = ttk.Button(self, text="Page8", command=lambda: controller.show_frame(PageEight))
+        button8.pack()
         button5 = ttk.Button(self, text="Quit", command=quit)
         button5.pack()
 #######################################################################################################
@@ -136,6 +139,59 @@ class PageSeven(tk.Frame):
         mg.generategraph(N, x, y)
         ds= dsol.DynamicSol(0,mg.getgraph())
         ans=ds.getans()
+        #print(ans)
+        colors = ("black")
+        area = np.pi * 3
+        # Plot
+        plt.scatter(x, y, s=area, c=colors, alpha=0.5)
+        x1=[]
+        y1=[]
+        #ind=0
+        for i in (ans):
+            x1.append(x[i])
+            y1.append(y[i])
+            #ind+=1
+        plt.plot(x1, y1, c=colors, alpha=0.5)
+        # splt.title('Scatter plot pythonspot.com')
+        plt.xlabel('x')
+        plt.ylabel('y')
+        # plt.show()
+
+        xlim = a.get_xlim()
+        ylim = a.get_ylim()
+
+        canvas = FigureCanvasTkAgg(f, self)
+        canvas.draw()
+
+        toolbar = NavigationToolbar2Tk(canvas, self)
+        toolbar.update()
+
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+
+class PageEight(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        label = tk.Label(self, text="Page8", font=LARGE_FONT)
+        label.pack(pady=10, padx=10)
+        button1 = ttk.Button(self, text="Back to Home", command=lambda: controller.show_frame(StartPage))
+        button1.pack()
+        f = plt.figure(figsize=(8, 8))
+        a = f.add_subplot(111)
+        # plt.axis('off')
+        n_cities = 6
+        x = np.random.randint(1000, size=n_cities)
+        y = np.random.randint(1000, size=n_cities)
+
+        mg = MyGraph()
+        mg.generategraph(n_cities, x, y)
+        n_ants = 6
+        it = 70
+        alpha = 7
+        beta = 2
+        e = 0.25
+        acosol = aco.ACOSol(mg.getgraph(), n_ants, n_cities, it, alpha, beta, e)
+        ans = acosol.getAns()
         print(ans)
         colors = ("black")
         area = np.pi * 3
