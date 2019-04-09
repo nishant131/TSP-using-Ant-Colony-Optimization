@@ -1,6 +1,6 @@
 import networkx as nx
 
-class DynamicSol:
+class Dynamic:
     def __init__(self,s,G):
         self.s=s
         self.G=G
@@ -9,6 +9,7 @@ class DynamicSol:
         self.ans.append(s)
         for i in G.nodes:
             self.citylist[i] = 0
+        self.cost = 0
         self.mincost(s)
 
     def least(self,city):
@@ -44,11 +45,17 @@ class DynamicSol:
             if ed_dict is None:
                 return
             self.ans.append(nextcity)
+            self.cost+=ed_dict['weight']
             return
         else:
             self.ans.append(nextcity)
+            ed_dict = self.G.get_edge_data(city, nextcity)
+            if ed_dict is None:
+                return
+            self.ans.append(nextcity)
+            self.cost += ed_dict['weight']
             self.mincost(nextcity)
         return
 
     def getans(self):
-        return self.ans
+        return self.ans, self.cost
