@@ -52,7 +52,7 @@ class drawGraph(tk.Tk):
         tk.Tk.__init__(self, *args, **kwargs)
 
         container = tk.Frame(self)
-        container.grid(row=0,column=0)
+        container.pack(side="top", fill="both", expand = True)
         container.grid_rowconfigure(0, weight=0)
         container.grid_columnconfigure(0, weight=0)
 
@@ -82,7 +82,7 @@ class StartPage(tk.Frame):
         self.T = Entry(parent)
         self.T.grid(row=4, column=1,sticky="nsew")
         gengraph = ttk.Button(self.parent, text="Generate Graph", command=self.displayGraph)
-        gengraph.grid(row=5, column=3,sticky="nsew")
+        gengraph.grid(row=5, column=1,sticky="nsew")
         self.N=None
         '''button7 = ttk.Button(self, text="Page7", command=lambda: controller.show_frame(PageSeven))
         button7.grid()
@@ -90,27 +90,31 @@ class StartPage(tk.Frame):
         button5.grid()'''
 
     def displayGraph(self):
-        for child in self.winfo_children():
-            child.destroy()
-        label = tk.Label(self.parent, text="Random Graph", font=LARGE_FONT)
-        label.grid(row=0, column=1)
-        naivebutton = ttk.Button(self.parent, text="Naive", command=self.naivesol)
-        naivebutton.grid(row=1, column=0 )
-        dpbutton = ttk.Button(self.parent, text="Dynamic Programming",command=self.dpsol)
-        dpbutton.grid(row=1, column=1)
-        acobutton = ttk.Button(self.parent, text="ACO", command=self.inputACO)
-        acobutton.grid(row=1, column=2)
-        #button1 = ttk.Button(self, text="Back to Home", command=app.mainloop)
-        #button1.grid()
-        quitbutton = Button(self.parent, text="Quit", command=quit)
-        quitbutton.grid(row=2, column=1)
         if self.N is None:
             self.N = self.T.get()
             self.T.destroy()
             self.N = int(self.N)
             self.mg = MyGraph(self.N)
             self.N, self.x, self.y = self.mg.getNxy()
-        f = plt.figure(figsize=(8, 8))
+
+
+        for child in self.parent.winfo_children():
+            child.destroy()
+
+        label = tk.Label(self.parent, text="Random Graph", font=LARGE_FONT)
+        label.grid(row=1, column=1)
+        naivebutton = ttk.Button(self.parent, text="Naive", command=self.naivesol)
+        naivebutton.grid(row=3, column=0 )
+        dpbutton = ttk.Button(self.parent, text="Dynamic Programming",command=self.dpsol)
+        dpbutton.grid(row=3, column=1)
+        acobutton = ttk.Button(self.parent, text="ACO", command=self.inputACO)
+        acobutton.grid(row=3, column=2)
+        #button1 = ttk.Button(self, text="Back to Home", command=app.mainloop)
+        #button1.grid()
+        quitbutton = Button(self.parent, text="Quit", command=quit)
+        quitbutton.grid(row=4, column=1)
+
+        f = plt.figure(figsize=(9, 5))
         a = f.add_subplot(111)
         colors = ("black")
         area = np.pi * 3
@@ -123,25 +127,23 @@ class StartPage(tk.Frame):
 
         xlim = a.get_xlim()
         ylim = a.get_ylim()
+        fr = tk.Frame(self.parent)
+        fr.grid(row=5, column=3, rowspan=1,columnspan=4)
 
-        canvas = FigureCanvasTkAgg(f, self)
+
+        canvas = FigureCanvasTkAgg(f, master=fr)
         canvas.draw()
 
-        toolbar = NavigationToolbar2Tk(canvas, self)
+        toolbar = NavigationToolbar2Tk(canvas, fr)
         toolbar.update()
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
-        canvas.get_tk_widget().grid(row=3,rowspan=5)
-        canvas.get_tk_widget().grid_columnconfigure(0,weight=1)
-        canvas._tkcanvas.grid(row=3,rowspan=2)
-        canvas._tkcanvas.grid_columnconfigure(0,weight=1)
-
-    #######################################################################################################
+        #######################################################################################################
     def plotsol(self,ans):
-
-        f = plt.figure(figsize=(8, 8))
+        f = plt.figure(figsize=(9, 5))
         a = f.add_subplot(111)
         # plt.axis('off')
-
         colors = ("black")
         area = np.pi * 3
         # Plot
@@ -158,48 +160,46 @@ class StartPage(tk.Frame):
         plt.xlabel('x')
         plt.ylabel('y')
         # plt.show()
-
         xlim = a.get_xlim()
         ylim = a.get_ylim()
-
-        canvas = FigureCanvasTkAgg(f, self)
+        fr = tk.Frame(self.parent)
+        fr.grid(row=5, column=3, rowspan=1, columnspan=4)
+        canvas = FigureCanvasTkAgg(f, master=fr)
         canvas.draw()
-
-        toolbar = NavigationToolbar2Tk(canvas, self)
+        toolbar = NavigationToolbar2Tk(canvas, fr)
         toolbar.update()
-
-        canvas.get_tk_widget().grid(side=tk.TOP, fill=tk.BOTH, expand=True)
-        canvas._tkcanvas.grid(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        canvas._tkcanvas.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
 
     def naivesol(self):
-        for child in self.winfo_children():
-            child.destroy()
-        # tk.Frame.__init__(self, parent)
-        label = tk.Label(self.parent, text="Naive", font=LARGE_FONT)
-        label.grid(row=0 , column=1)
-        #button1 = ttk.Button(self, text="Back to Home", command=self.__init__)
-        #button1.grid()
-        backbutton = ttk.Button(self.parent, text="Back to Graph", command=self.displayGraph)
-        backbutton.grid()
-        if (self.N >= 12):
-            label1 = tk.Label(self.parent, text="Nodes exceeded", font=LARGE_FONT)
-            label1.grid(row=1 , column=1)
-        else:
-            tm1 = time.clock()
-            nvsol = nv.Naive(0, self.mg.getgraph())
-            tm2 = time.clock()
-            ans, cost = nvsol.getAns()
-            costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
-            costLabel.grid(row=1 , column=1)
-            timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
-            timeLabel.grid(row=2 , column=1)
-            # print(cost)
-            self.plotsol(ans)
+            for child in self.parent.winfo_children():
+                child.destroy()
+            # tk.Frame.__init__(self, parent)
+            label = tk.Label(self.parent, text="Naive", font=LARGE_FONT)
+            label.grid(row=0 , column=1)
+            #button1 = ttk.Button(self, text="Back to Home", command=self.__init__)
+            #button1.grid()
+            backbutton = ttk.Button(self.parent, text="Back to Graph", command=self.displayGraph)
+            backbutton.grid()
+            if (self.N >= 12):
+                label1 = tk.Label(self.parent, text="Nodes exceeded", font=LARGE_FONT)
+                label1.grid(row=1 , column=1)
+            else:
+                tm1 = time.clock()
+                nvsol = nv.Naive(0, self.mg.getgraph())
+                tm2 = time.clock()
+                ans, cost = nvsol.getAns()
+                costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
+                costLabel.grid(row=1 , column=1)
+                timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
+                timeLabel.grid(row=2 , column=1)
+                # print(cost)
+                self.plotsol(ans)
 
     #######################################################################################################
 
     def dpsol(self):
-        for child in self.winfo_children():
+        for child in self.parent.winfo_children():
             child.destroy()
         label = tk.Label(self.parent, text="Dynamic Programming", font=LARGE_FONT)
         label.grid(row=0 , column=1)
@@ -218,11 +218,10 @@ class StartPage(tk.Frame):
         costLabel.grid(row= 1, column=1)
         timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
         timeLabel.grid(row= 2, column=1)
-        # print(ans)
         self.plotsol(ans)
 
     def inputACO(self):
-        for child in self.winfo_children():
+        for child in self.parent.winfo_children():
             child.destroy()
         label = tk.Label(self.parent, text="Input Parameters", font=LARGE_FONT)
         label.grid(row=0, column=1)
@@ -233,7 +232,7 @@ class StartPage(tk.Frame):
         label2 = tk.Label(self.parent, text="Number of Iterations:", font=LARGE_FONT)
         label2.grid(row=2 , column=0)
         self.T2 = Entry(self.parent)
-        self.T2.grid()
+        self.T2.grid(row=2 , column=1)
         label3= tk.Label(self.parent, text="Alpha:", font=LARGE_FONT)
         label3.grid(row= 3, column=0)
         self.T3 = Entry(self.parent)
@@ -250,20 +249,9 @@ class StartPage(tk.Frame):
         button.grid(row=6,column=1)
 
     def acosol(self):
-        for child in self.winfo_children():
-            child.destroy()
-        label = tk.Label(self.parent, text="ACO", font=LARGE_FONT)
-        label.grid(row=0 , column=1)
-        #button1 = ttk.Button(self, text="Back to Home", command= self.controller.show_frame(StartPage))
-        #button1.grid()
-        backbutton = ttk.Button(self.parent, text="Back to Graph", command=self.displayGraph)
-        backbutton.grid(row=4 , column=1)
-        backbutton1 = ttk.Button(self.parent, text="Change ACO Parameters", command=self.inputACO)
-        backbutton1.grid(row=3 , column=1)
         f = plt.figure(figsize=(8, 8))
         a = f.add_subplot(111)
         # plt.axis('off')
-
         n_cities, x, y = self.mg.getNxy()
         n_ants = int(self.T1.get())
         it = int(self.T2.get())
@@ -274,6 +262,16 @@ class StartPage(tk.Frame):
         acosol = aco.ACOSol(self.mg.getgraph(), n_ants, n_cities, it, alpha, beta, e)
         tm2 = time.clock()
         ans, cost = acosol.getAns()
+        for child in self.parent.winfo_children():
+            child.destroy()
+        label = tk.Label(self.parent, text="ACO", font=LARGE_FONT)
+        label.grid(row=0, column=1)
+        # button1 = ttk.Button(self, text="Back to Home", command= self.controller.show_frame(StartPage))
+        # button1.grid()
+        backbutton = ttk.Button(self.parent, text="Back to Graph", command=self.displayGraph)
+        backbutton.grid(row=4, column=1)
+        backbutton1 = ttk.Button(self.parent, text="Change ACO Parameters", command=self.inputACO)
+        backbutton1.grid(row=3, column=1)
         costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
         costLabel.grid(row=1 , column=1)
         timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)

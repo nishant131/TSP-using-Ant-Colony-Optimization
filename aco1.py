@@ -44,24 +44,24 @@ class ACOSol:
         # note adding 1 because we want to come back to the source city
         route = np.zeros((self.m, self.n + 1))
         for ite in range(self.iteration):
-
             for i in range(self.m):
                 visit = np.zeros((1, self.n))
                 route[i, 0] = i
                 route[i, self.n] = i
-                visit[0, i] = 1
+                visit[0, i%self.n] = 1
                 k = 1
                 t4 = 0
                 temp_visibility = np.array(visibility)  # creating a copy of visibility
-                x = i
+                x = i%self.n
                 while not (self.visitall(visit)):
                     t5 = 0
                     maxprob = 0
                     for y in range(self.n):
                         if visit[0, y] == 1 or y == x:
                             continue
-                        t1 = pheromone[x, y]  # pheromone distribution b/w xny
-                        t2 = temp_visibility[x, y]  # 1/d b/w xny
+
+                        t1 = pheromone[x%self.n, y]  # pheromone distribution b/w xny
+                        t2 = temp_visibility[x%self.n, y]  # 1/d b/w xny
                         t3 = pow(t1, self.alpha) * pow(t2, self.beta)
                         if t3 > maxprob:
                             maxprob = t3
@@ -88,8 +88,8 @@ class ACOSol:
             for nxt in (ant):
                 if nxt == prv:
                     continue
-                prv = int(prv)
-                nxt = int(nxt)
+                prv = int(prv%self.n)
+                nxt = int(nxt%self.n)
                 temp_cost += self.d[prv, nxt]
                 prv = nxt
             if temp_cost < self.cost:
