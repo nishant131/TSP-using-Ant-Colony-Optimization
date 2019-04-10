@@ -60,6 +60,7 @@ class drawGraph(tk.Tk):
             frame = F(container,  self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
+
         self.show_frame(StartPage)
 
     def show_frame(self, cont):
@@ -73,31 +74,27 @@ class StartPage(tk.Frame):
         self.controller = controller
         tk.Frame.__init__(self, parent)
         label = tk.Label(self.parent, text="Start Page", font=LARGE_FONT)
-        label.grid(row=3, column=1,sticky="nsew")
+        label.grid( row=3, column=10,columnspan=2,sticky="nsew")
         inputlab = tk.Label(self.parent, text="Enter number of nodes")
-        inputlab.grid(row=4, column=0,sticky="nsew")
+        inputlab.grid( row=4, column=10,sticky="nsew")
         self.T = Entry(parent)
-        self.T.grid(row=4, column=1,sticky="nsew")
+        self.T.grid(row=4, column=11,sticky="nsew")
         gengraph = ttk.Button(self.parent, text="Generate Graph", command=self.displayGraph)
-        gengraph.grid(row=5, column=1,sticky="nsew")
+        gengraph.grid(row=5, column=10, columnspan=2,sticky="nsew")
         self.N=None
-        '''button7 = ttk.Button(self, text="Page7", command=lambda: controller.show_frame(PageSeven))
-        button7.grid()
-        button5 = ttk.Button(self, text="Quit", command=quit)
-        button5.grid()'''
 
     def reload(self):
         for child in self.parent.winfo_children():
             child.destroy()
         label = tk.Label(self.parent, text="Start Page", font=LARGE_FONT)
-        label.grid(row=3, column=1, sticky="nsew")
+        label.grid(row=3, column=5,columnspan=2,sticky="nsew")
         inputlab = tk.Label(self.parent, text="Enter number of nodes")
-        inputlab.grid(row=4, column=0, sticky="nsew")
+        inputlab.grid(row=4, column=4,sticky="nsew")
         self.T = Entry(self.parent)
-        self.T.grid(row=4, column=1, sticky="nsew")
+        self.T.grid(row=4, column=5,sticky="nsew")
         gengraph = ttk.Button(self.parent, text="Generate Graph", command=self.displayGraph)
-        gengraph.grid(row=5, column=1, sticky="nsew")
-        self.N = None
+        gengraph.grid(row=5, column=4, columnspan=2,sticky="nsew")
+        self.N=None
 
     def displayGraph(self):
         if self.N is None:
@@ -111,17 +108,17 @@ class StartPage(tk.Frame):
             child.destroy()
 
         label = tk.Label(self.parent, text="Random Graph", font=LARGE_FONT)
-        label.grid(row=1, column=1)
+        label.grid(row=1, column=3)
         naivebutton = ttk.Button(self.parent, text="Naive", command=self.naivesol)
-        naivebutton.grid(row=3, column=0 )
+        naivebutton.grid(row=3, column=2 )
         dpbutton = ttk.Button(self.parent, text="Dynamic Programming",command=self.dpsol)
-        dpbutton.grid(row=3, column=1)
+        dpbutton.grid(row=3, column=3)
         acobutton = ttk.Button(self.parent, text="ACO", command=self.inputACO)
-        acobutton.grid(row=3, column=2)
+        acobutton.grid(row=3, column=4)
         button1 = ttk.Button(self.parent, text="Back to Home", command=self.reload)
-        button1.grid()
+        button1.grid(row=4, column=2)
         quitbutton = Button(self.parent, text="Quit", command=quit)
-        quitbutton.grid(row=4, column=1)
+        quitbutton.grid(row=4, column=4)
 
         f = plt.figure(figsize=(9, 5))
         a = f.add_subplot(111)
@@ -133,15 +130,12 @@ class StartPage(tk.Frame):
         plt.xlabel('x')
         plt.ylabel('y')
         # plt.show()
-
         xlim = a.get_xlim()
         ylim = a.get_ylim()
         fr = tk.Frame(self.parent)
-        fr.grid(row=5, column=3, rowspan=1,columnspan=4)
-
+        fr.grid(row=5, column=1, rowspan=1,columnspan=5)
         canvas = FigureCanvasTkAgg(f, master=fr)
         canvas.draw()
-
         toolbar = NavigationToolbar2Tk(canvas, fr)
         toolbar.update()
         canvas.get_tk_widget().pack(side=tk.TOP, fill=tk.BOTH, expand=True)
@@ -170,7 +164,7 @@ class StartPage(tk.Frame):
         xlim = a.get_xlim()
         ylim = a.get_ylim()
         fr = tk.Frame(self.parent)
-        fr.grid(row=5, column=3, rowspan=1, columnspan=4)
+        fr.grid(row=5, column=1, rowspan=1, columnspan=5)
         canvas = FigureCanvasTkAgg(f, master=fr)
         canvas.draw()
         toolbar = NavigationToolbar2Tk(canvas, fr)
@@ -248,7 +242,7 @@ class StartPage(tk.Frame):
         label4.grid(row=4 , column=0)
         self.T4 = Entry(self.parent)
         self.T4.grid(row=4 , column=1)
-        label5= tk.Label(self.parent, text="Visibility Constant:", font=LARGE_FONT)
+        label5= tk.Label(self.parent, text="Decay Constant:", font=LARGE_FONT)
         label5.grid(row=5 , column=0)
         self.T5 = Entry(self.parent)
         self.T5.grid(row=5 , column=1)
@@ -283,6 +277,16 @@ class StartPage(tk.Frame):
         costLabel.grid(row=1 , column=1)
         timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
         timeLabel.grid(row=2 , column=1)
+        label1 = tk.Label(self.parent, text="No. of ants= " + str(n_ants))
+        label1.grid(row=4 , column=2)
+        label2 = tk.Label(self.parent, text="No. of iterations= " + str(it))
+        label2.grid(row=4 , column=3)
+        label3 = tk.Label(self.parent, text="Alpha= " + str(alpha))
+        label3.grid(row=4 , column=4)
+        label4 = tk.Label(self.parent, text="Beta= " + str(beta))
+        label4.grid(row=4 , column=5)
+        label5 = tk.Label(self.parent, text="Decay Constant= " + str(e))
+        label5.grid(row=4 , column=6)
         button1 = ttk.Button(self.parent, text="Back to Home", command=self.reload)
         button1.grid(row=4,column=0)
         # print(ans)
