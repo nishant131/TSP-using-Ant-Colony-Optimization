@@ -1,11 +1,24 @@
 import networkx as nx
 import numpy as np
 import queue
+import time
 
 class Dynamic:
     def __init__(self,s,G,n):
         self.s=s
         self.G=G
+        mat = []
+        for i in G.nodes:
+            t3 = []
+            for j in G.nodes:
+                ed_dict = G.get_edge_data(i, j)
+                if ed_dict is None:
+                    t3.append(0)
+                else:
+                    ed = ed_dict['weight']
+                    t3.append(ed)
+            mat.append(t3)
+        self.d = np.array(mat)
         self.n=n
         self.ans = []
         self.ans.append(s)
@@ -14,12 +27,16 @@ class Dynamic:
         self.dp = np.full(((2 ** n) + 2, n + 2), np.inf)
         self.dp1 = np.full(((2 ** n) + 2, n + 2), np.inf)
         self.cost=self.solve(1,self.s)
-        self.find_path()
+        self.travtime=0
+        if n<10:
+            tm1 = time.clock()
+            self.find_path()
+            tm2 = time.clock()
+            self.travtime=tm2-tm1
 
     def solve(self,mask, pos):
         if mask == self.Visit_all:
-            ed_dict = self.G.get_edge_data(self.s, pos)
-            ed = ed_dict['weight']
+            ed = self.d[self.s,pos]
             # print(pos,s,ed)
             self.dp[mask][pos] = ed
             self.dp1[mask][pos] = pos
@@ -28,8 +45,8 @@ class Dynamic:
 
         for i in self.G.nodes:
             if (mask & (1 << i)) == 0:
-                ed_dict1 = self.G.get_edge_data(i, pos)
-                ed1 = ed_dict1['weight']
+
+                ed1 = self.d[i,pos]
                 newcost = ed1 + self.solve(mask | (1 << i), i)
                 if (self.dp[mask | (1 << i)][pos] > newcost):
                     self.dp[mask | (1 << i)][pos] = newcost
@@ -67,11 +84,12 @@ class Dynamic:
 
             else:
                 for i in self.G.nodes:
-                    if arr1[0] != i and self.G.get_edge_data(arr1[0], i) != None and arr1[2 + i] == 0:
+                    if arr1[0] != i and self.d[int(arr1[0]), i] != 0 and arr1[2 + i] == 0:
                         arr2 = np.copy(arr1)
                         arr2[0] = i
-                        weight_dict = self.G.get_edge_data(arr1[0], i)
-                        arr2[1] = arr1[1] + weight_dict['weight']
+                        temp=int(arr1[0])
+                        weight = self.d[temp, i]
+                        arr2[1] = arr1[1] + weight
 
                         mx = -1
                         for j in range(2, len(arr1)):

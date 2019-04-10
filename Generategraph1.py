@@ -219,6 +219,9 @@ class StartPage(tk.Frame):
         costLabel.grid(row= 1, column=1)
         timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
         timeLabel.grid(row= 2, column=1)
+        timeLabel1 = tk.Label(self.parent, text="Traversal Time= " + str(ds.travtime), font=LARGE_FONT)
+        timeLabel1.grid(row=2, column=2)
+
         self.plotsol(ans)
 
     def inputACO(self):
