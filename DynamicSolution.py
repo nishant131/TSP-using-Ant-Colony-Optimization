@@ -1,60 +1,84 @@
 import networkx as nx
+import numpy as np
+import queue
 
 class Dynamic:
-    def __init__(self,s,G):
+    def __init__(self,s,G,n):
         self.s=s
         self.G=G
-        self.citylist = {}
+        self.n=n
         self.ans = []
         self.ans.append(s)
-        for i in G.nodes:
-            self.citylist[i] = 0
         self.cost = 0
-        self.mincost(s)
+        self.Visit_all=(1<<n)-1
+        self.dp = np.full(((2 ** n) + 2, n + 2), np.inf)
+        self.dp1 = np.full(((2 ** n) + 2, n + 2), np.inf)
+        self.cost=self.solve(1,self.s)
+        self.find_path()
 
-    def least(self,city):
-        ncity = 999999999
-        minimum = 999999999
-        for i in self.G.nodes:
-            if i==self.s:
-                continue
-            ed_dict = self.G.get_edge_data(city, i)
-            if ed_dict is None:
-                continue
+    def solve(self,mask, pos):
+        if mask == self.Visit_all:
+            ed_dict = self.G.get_edge_data(self.s, pos)
             ed = ed_dict['weight']
-            if ((self.citylist[i] == 0) and (ed != 0)):
-                if ((2*ed) < minimum):
-                    ed_dict1 = self.G.get_edge_data(i, self.s)
-                    if ed_dict1 is None:
-                        continue
-                    ed1 = ed_dict['weight']
-                    ed_dict2 = self.G.get_edge_data(city,i)
-                    if ed_dict2 is None:
-                        continue
-                    ed2 = ed_dict2['weight']
-                    minimum = ed1 + ed2
-                    ncity = i
-        return ncity
+            # print(pos,s,ed)
+            self.dp[mask][pos] = ed
+            self.dp1[mask][pos] = pos
+            return ed
+        mincost = 9999999
 
-    def mincost(self,city):
-        self.citylist[city] = 1
-        nextcity = self.least(city)
-        if (nextcity == 999999999):
-            nextcity = self.s
-            ed_dict = self.G.get_edge_data(city, nextcity)
-            if ed_dict is None:
-                return
-            self.ans.append(nextcity)
-            self.cost+=ed_dict['weight']
-            return
-        else:
-            self.ans.append(nextcity)
-            ed_dict = self.G.get_edge_data(city, nextcity)
-            if ed_dict is None:
-                return
-            self.ans.append(nextcity)
-            self.cost += ed_dict['weight']
-            self.mincost(nextcity)
+        for i in self.G.nodes:
+            if (mask & (1 << i)) == 0:
+                ed_dict1 = self.G.get_edge_data(i, pos)
+                ed1 = ed_dict1['weight']
+                newcost = ed1 + self.solve(mask | (1 << i), i)
+                if (self.dp[mask | (1 << i)][pos] > newcost):
+                    self.dp[mask | (1 << i)][pos] = newcost
+                    self.dp1[mask | (1 << i)][pos] = pos
+                if newcost < mincost:
+                    mincost = newcost
+        return mincost
+
+    def check(self,arr1):
+        count1 = 0
+        for i in range(2, len(arr1)):
+            if arr1[i] > 0:
+                count1 += 1
+        return count1
+
+    def find_path(self):
+        L = queue.Queue(maxsize=1000000)
+        arr = np.zeros(self.n + 2)
+        arr[0] = 0
+        arr[1] = 0
+        arr[2] = 0
+        L.put(arr)
+        while not L.empty():
+            arr1 = L.get()
+            if (arr1[0] == self.s and arr1[1] == self.cost and self.check(arr1) == self.n):
+
+                self.ans.append(0)
+                nxt = 1
+                while (nxt <= self.n):
+                    for i in range(2, len(arr1)):
+                        if (int(arr1[i]) == nxt):
+                            self.ans.append(i - 2)
+                            break
+                    nxt += 1
+
+            else:
+                for i in self.G.nodes:
+                    if arr1[0] != i and self.G.get_edge_data(arr1[0], i) != None and arr1[2 + i] == 0:
+                        arr2 = np.copy(arr1)
+                        arr2[0] = i
+                        weight_dict = self.G.get_edge_data(arr1[0], i)
+                        arr2[1] = arr1[1] + weight_dict['weight']
+
+                        mx = -1
+                        for j in range(2, len(arr1)):
+                            mx = max(mx, arr1[j])
+                        arr2[i + 2] = mx + 1
+                        if (arr2[1] <= self.cost):
+                            L.put(arr2)
         return
 
     def getans(self):

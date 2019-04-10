@@ -194,7 +194,7 @@ class StartPage(tk.Frame):
                 costLabel.grid(row=1 , column=1)
                 timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
                 timeLabel.grid(row=2 , column=1)
-                # print(cost)
+                #print(cost)
                 self.plotsol(ans)
 
     #######################################################################################################
@@ -212,7 +212,7 @@ class StartPage(tk.Frame):
         a = f.add_subplot(111)
         # plt.axis('off')
         tm1 = time.clock()
-        ds = dsol.Dynamic(0, self.mg.getgraph())
+        ds = dsol.Dynamic(0, self.mg.getgraph(),self.N)
         tm2 = time.clock()
         ans, cost = ds.getans()
         costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
@@ -267,8 +267,6 @@ class StartPage(tk.Frame):
             child.destroy()
         label = tk.Label(self.parent, text="ACO", font=LARGE_FONT)
         label.grid(row=0, column=1)
-        # button1 = ttk.Button(self, text="Back to Home", command= self.controller.show_frame(StartPage))
-        # button1.grid()
         backbutton = ttk.Button(self.parent, text="Back to Graph", command=self.displayGraph)
         backbutton.grid(row=4, column=1)
         backbutton1 = ttk.Button(self.parent, text="Change ACO Parameters", command=self.inputACO)

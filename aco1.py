@@ -36,7 +36,6 @@ class ACOSol:
     def solve(self):
         visibility = 1 / self.d
         visibility[visibility == inf] = 0
-
         # intializing pheromone present at the paths to the cities
         pheromone = np.ones((self.n, self.n))
         for i in range(self.n):
@@ -79,8 +78,6 @@ class ACOSol:
                         continue
                     visibility[i, j] *= (1 - self.e)
                     visibility[i, j] += t4
-
-        #print("route")
         #print(route)
         for ant in (route):
             prv = ant[0]
