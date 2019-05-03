@@ -155,6 +155,7 @@ class StartPage(tk.Frame):
         for i in (ans):
             x1.append(self.x[i])
             y1.append(self.y[i])
+            print(i,self.x[i],self.y[i])
             # ind+=1
         plt.plot(x1, y1, c=colors, alpha=0.5)
         # splt.title('Scatter plot pythonspot.com')
@@ -175,6 +176,7 @@ class StartPage(tk.Frame):
     def naivesol(self):
             for child in self.parent.winfo_children():
                 child.destroy()
+            print("Naive Approach")
             # tk.Frame.__init__(self, parent)
             label = tk.Label(self.parent, text="Naive", font=LARGE_FONT)
             label.grid(row=0 , column=1)
@@ -192,7 +194,7 @@ class StartPage(tk.Frame):
                 ans, cost = nvsol.getAns()
                 costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
                 costLabel.grid(row=1 , column=1)
-                timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
+                timeLabel = tk.Label(self.parent, text="Time= " + str((tm2 - tm1)*1000), font=LARGE_FONT)
                 timeLabel.grid(row=2 , column=1)
                 #print(cost)
                 self.plotsol(ans)
@@ -202,6 +204,7 @@ class StartPage(tk.Frame):
     def dpsol(self):
         for child in self.parent.winfo_children():
             child.destroy()
+        print("DP")
         label = tk.Label(self.parent, text="Dynamic Programming", font=LARGE_FONT)
         label.grid(row=0 , column=1)
         button1 = ttk.Button(self.parent, text="Back to Home", command= self.reload)
@@ -217,10 +220,12 @@ class StartPage(tk.Frame):
         ans, cost = ds.getans()
         costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
         costLabel.grid(row= 1, column=1)
-        timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
+        timeLabel = tk.Label(self.parent, text="Time= " + str((tm2 - tm1)*1000), font=LARGE_FONT)
         timeLabel.grid(row= 2, column=1)
-        timeLabel1 = tk.Label(self.parent, text="Traversal Time= " + str(ds.travtime), font=LARGE_FONT)
+        timeLabel1 = tk.Label(self.parent, text="Traversal Time= " + str((ds.travtime)*1000), font=LARGE_FONT)
         timeLabel1.grid(row=2, column=2)
+        timeLabel2 = tk.Label(self.parent, text="Execution Time= " + str((tm2-tm1-ds.travtime)*1000), font=LARGE_FONT)
+        timeLabel2.grid(row=2, column=3)
 
         self.plotsol(ans)
 
@@ -253,6 +258,7 @@ class StartPage(tk.Frame):
         button.grid(row=6,column=1)
 
     def acosol(self):
+        print("ACO")
         f = plt.figure(figsize=(8, 8))
         a = f.add_subplot(111)
         # plt.axis('off')
@@ -276,7 +282,7 @@ class StartPage(tk.Frame):
         backbutton1.grid(row=3, column=1)
         costLabel = tk.Label(self.parent, text="Cost= " + str(cost), font=LARGE_FONT)
         costLabel.grid(row=1 , column=1)
-        timeLabel = tk.Label(self.parent, text="Time= " + str(tm2 - tm1), font=LARGE_FONT)
+        timeLabel = tk.Label(self.parent, text="Time= " + str((tm2 - tm1)*1000), font=LARGE_FONT)
         timeLabel.grid(row=2 , column=1)
         label1 = tk.Label(self.parent, text="No. of ants= " + str(n_ants))
         label1.grid(row=4 , column=2)

@@ -45,7 +45,6 @@ class Dynamic:
 
         for i in self.G.nodes:
             if (mask & (1 << i)) == 0:
-
                 ed1 = self.d[i,pos]
                 newcost = ed1 + self.solve(mask | (1 << i), i)
                 if (self.dp[mask | (1 << i)][pos] > newcost):
