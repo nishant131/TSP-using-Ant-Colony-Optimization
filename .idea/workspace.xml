@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="843bf71a-daef-4eb8-88c1-13c8633cdd1d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitattributes" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/aco.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/button.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/chn31.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/myfig.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plot.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/prp.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tb.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tb1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testGUI.py" beforeDir="false" />
-    </list>
+    <list default="true" id="843bf71a-daef-4eb8-88c1-13c8633cdd1d" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,8 +48,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/aco1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="664">
-              <caret line="79" column="42" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
+            <state relative-caret-position="1340">
+              <caret line="92" column="42" selection-start-line="92" selection-start-column="42" selection-end-line="92" selection-end-column="42" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -180,16 +168,15 @@
       <workItem from="1554928943706" duration="717000" />
       <workItem from="1556909970658" duration="681000" />
       <workItem from="1568642021089" duration="215000" />
-      <workItem from="1569589401194" duration="761000" />
+      <workItem from="1569589401194" duration="1129000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7435000" />
+    <option name="totallyTimeSpent" value="7803000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15204236" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -259,8 +246,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/aco1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="664">
-          <caret line="79" column="42" selection-start-line="79" selection-start-column="42" selection-end-line="79" selection-end-column="42" />
+        <state relative-caret-position="1340">
+          <caret line="92" column="42" selection-start-line="92" selection-start-column="42" selection-end-line="92" selection-end-column="42" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
